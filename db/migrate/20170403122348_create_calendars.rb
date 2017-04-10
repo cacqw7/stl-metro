@@ -3,7 +3,7 @@ class CreateCalendars < ActiveRecord::Migration[5.1]
     create_table :calendars do |t|
       t.string :service_id, presence: true
       t.integer :monday, presence: true
-      t.integer :tueseday, presence: true
+      t.integer :tuesday, presence: true
       t.integer :wednesday, presence: true
       t.integer :thursday, presence: true
       t.integer :friday, presence: true

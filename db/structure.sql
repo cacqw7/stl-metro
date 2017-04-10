@@ -118,7 +118,7 @@ CREATE TABLE calendars (
     id bigint NOT NULL,
     service_id character varying,
     monday integer,
-    tueseday integer,
+    tuesday integer,
     wednesday integer,
     thursday integer,
     friday integer,
