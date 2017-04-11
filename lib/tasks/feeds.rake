@@ -16,7 +16,8 @@ class Importer
       :agency,
       :calendar,
       :calendar_dates,
-      :routes
+      :routes,
+      :shapes
     ].each(&importer.method(:send))
   end
 
@@ -52,6 +53,14 @@ class Importer
     end
 
     Route.insert_many imported_data
+  end
+
+  def shapes
+    imported_data = clean_csv(:shapes) do |obj|
+      timestamps! obj
+    end
+
+    Shape.insert_many imported_data
   end
 
   private
