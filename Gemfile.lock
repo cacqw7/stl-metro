@@ -43,6 +43,8 @@ GEM
       activemodel (= 5.1.0.rc1)
       activesupport (= 5.1.0.rc1)
       arel (~> 8.0)
+    activerecord-insert_many (0.4.0)
+      activerecord (>= 5.0)
     activesupport (5.1.0.rc1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -142,6 +144,7 @@ GEM
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
+    smarter_csv (1.1.4)
     spring (2.0.1)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -180,6 +183,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-insert_many
   byebug
   capybara (~> 2.13.0)
   coffee-rails (~> 4.2)
@@ -192,6 +196,7 @@ DEPENDENCIES
   rubyzip
   sass-rails!
   selenium-webdriver
+  smarter_csv
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
