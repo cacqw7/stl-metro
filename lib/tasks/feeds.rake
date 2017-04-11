@@ -41,7 +41,7 @@ class Importer
   def calendar
     imported_data = clean_csv(:calendar) do |obj|
       timestamps! obj
-      format_dates! obj, :start_date, :end_date
+      format_dates! obj, 'start_date', 'end_date'
     end
 
     Calendar.insert_many imported_data
@@ -66,13 +66,13 @@ class Importer
   private
 
   def timestamps!(obj)
-    obj[:created_at] = now
-    obj[:updated_at] = now
+    obj['created_at'] = now
+    obj['updated_at'] = now
   end
 
   def format_dates!(obj, *properties)
     properties.each do |property|
-      obj[property] = DateTime.strptime(r[:start_date].to_s, "%Y%m%d") if obj[property]
+      obj[property] = DateTime.strptime(obj[property].to_s, "%Y%m%d") if obj[property]
     end
   end
 
