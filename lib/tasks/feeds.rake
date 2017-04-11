@@ -17,7 +17,8 @@ class Importer
       :calendar,
       :calendar_dates,
       :routes,
-      :shapes
+      :shapes,
+      :stop_times
     ].each(&importer.method(:send))
   end
 
@@ -63,6 +64,15 @@ class Importer
     Shape.insert_many imported_data
   end
 
+  def stop_times
+    imported_data = clean_csv(:stop_times) do |obj|
+      timestamps! obj
+      format_times! obj, 'arrival_time', 'departure_time'
+    end
+
+    StopTime.insert_many imported_data
+  end
+
   private
 
   def timestamps!(obj)
@@ -73,6 +83,20 @@ class Importer
   def format_dates!(obj, *properties)
     properties.each do |property|
       obj[property] = DateTime.strptime(obj[property].to_s, "%Y%m%d") if obj[property]
+    end
+  end
+
+  def format_times!(obj, *properties)
+    properties.each do |property|
+      next unless obj[property]
+
+      prefix = property.gsub(/_time\z/, '')
+      hour, minute, second = obj[property].split(':')
+      obj["#{prefix}_hour"] = hour
+      obj["#{prefix}_minute"] = minute
+      obj["#{prefix}_second"] = second
+
+      obj.delete(property)
     end
   end
 
