@@ -35,6 +35,7 @@ gem 'smarter_csv'
 gem 'activerecord-insert_many', github: 'cph/activerecord-insert_many'
 gem 'rubyzip', require: false
 gem 'pastel'
+gem 'ruby-progressbar'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
