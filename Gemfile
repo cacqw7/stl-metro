@@ -32,7 +32,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'smarter_csv'
-gem 'activerecord-insert_many'
+gem 'activerecord-insert_many', github: 'cph/activerecord-insert_many'
 gem 'rubyzip', require: false
 gem 'pastel'
 # Use Capistrano for deployment

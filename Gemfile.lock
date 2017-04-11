@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/cph/activerecord-insert_many.git
+  revision: 841d9c657d90c128187a405d4abaff8d0b96ad62
+  specs:
+    activerecord-insert_many (0.4.0)
+      activerecord (>= 5.0)
+
+GIT
   remote: https://github.com/rails/sass-rails.git
   revision: dfbcc6a53653d8908007e26324a0f299f026ec4f
   specs:
@@ -43,8 +50,6 @@ GEM
       activemodel (= 5.1.0.rc1)
       activesupport (= 5.1.0.rc1)
       arel (~> 8.0)
-    activerecord-insert_many (0.4.0)
-      activerecord (>= 5.0)
     activesupport (5.1.0.rc1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -183,7 +188,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-insert_many
+  activerecord-insert_many!
   byebug
   capybara (~> 2.13.0)
   coffee-rails (~> 4.2)
