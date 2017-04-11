@@ -1,30 +1,82 @@
-class Import
-  DATA_FOLDER = "#{Rails.root.join('tmp', 'gtfs')}"
-  class << self
-    def agency
-      SmarterCSV::process(File.open("#{DATA_FOLDER}/agency.txt")) do |chunk|
-        now = Time.now.to_datetime
-        chunk.each do |h|
-          h[:created_at] = now
-          h[:updated_at] = now
-        end
+class MissingFilesException < Exception; end
+class Importer
+  attr_reader :now
 
-        Agency.insert_many chunk
-      end
+  def initialize(dir)
+    @dir = dir
+    raise MissingFilesException if Dir.glob("#{dir}/**").empty?
+
+    @now = Time.now.to_datetime
+  end
+
+  def self.import_all(dir)
+    importer = new(dir)
+
+    [
+      :agency,
+      :calendar,
+      :calendar_dates,
+      :routes
+    ].each(&importer.method(:send))
+  end
+
+  def agency
+    imported_data = clean_csv(:agency) do |obj|
+      timestamps! obj
     end
 
-    def calendar_dates
-      SmarterCSV::process(File.open("#{DATA_FOLDER}/calendar_dates.txt")) do |chunk|
-        now = Time.now.to_datetime
-        chunk.each do |h|
-          h[:created_at] = now
-          h[:updated_at] = now
-          h[:date] = DateTime.strptime(h[:date].to_s, "%Y%m%d")
-        end
+    Agency.insert_many imported_data
+  end
 
-        CalendarDate.insert_many chunk
+  def calendar_dates
+    imported_data = clean_csv(:calendar_dates) do |obj|
+      timestamps! obj
+      format_dates! obj, :date
+    end
+
+    CalendarDate.insert_many imported_data
+  end
+
+  def calendar
+    imported_data = clean_csv(:calendar) do |obj|
+      timestamps! obj
+      format_dates! obj, :start_date, :end_date
+    end
+
+    Calendar.insert_many imported_data
+  end
+
+  def routes
+    imported_data = clean_csv(:routes) do |obj|
+      timestamps! obj
+    end
+
+    Route.insert_many imported_data
+  end
+
+  private
+
+  def timestamps!(obj)
+    obj[:created_at] = now
+    obj[:updated_at] = now
+  end
+
+  def format_dates!(obj, *properties)
+    properties.each do |property|
+      obj[property] = DateTime.strptime(r[:start_date].to_s, "%Y%m%d") if obj[property]
+    end
+  end
+
+  def clean_csv(filename)
+    CSV.foreach(dir(filename), headers: true).each_with_object([]) do |row, chunk|
+      chunk << row.to_h.tap do |imported_object|
+        yield imported_object
       end
     end
+  end
+
+  def dir(filename)
+    "#{@dir}/#{filename}.txt"
   end
 end
 
@@ -66,31 +118,15 @@ namespace :feeds do
 
   desc "Import most recent download to the database"
   task import: :environment do
-    files_to_import = Dir.glob("#{Rails.root}/tmp/gtfs/**")
-
-    if files_to_import.empty?
+    begin
+      importer = Importer.import_all(Rails.root.join('tmp', 'gtfs'))
+    rescue MissingFilesException
       puts <<~STRING
       🚨  No data to import! 🚨
       Please run 'rake feeds:fetch' to get most recent transit data.
       STRING
       exit 1
     end
-
-    # data_to_load = SmarterCSV::process(File.open("#{Rails.root.join('tmp', 'gtfs', 'agency.txt')}"))
-    #
-    # files_to_import.each do |file|
-    #   data_type = File.basename(file, File.extname(file))
-    #   klass = data_type.singularize.camelize.constantize
-    #   puts pastel.blue("Importing: #{klass}")
-    #   data_to_load = SmarterCSV::process(File.open(file))
-    #   now = Time.now.to_datetime
-    #   timestamp = { created_at: now, updated_at: now }
-    #
-    #   data_to_load.map! { |hsh| hsh.merge(timestamp) }
-    #   klass.insert_many data_to_load
-    # end
-    Import.agency
-    Import.calendar_dates
   end
 
   desc "TODO"
