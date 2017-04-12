@@ -17,7 +17,8 @@ class Importer
       :calendar_dates,
       :routes,
       :shapes,
-      :stop_times
+      :stop_times,
+      :stops
     ].each(&importer.method(:send))
   end
 
@@ -87,6 +88,17 @@ class Importer
       end
 
       StopTime.insert_many imported_data
+    end
+  end
+
+  def stops
+    progress_bar(:stops) do |pbar|
+      imported_data = clean_csv(:stops) do |obj|
+        timestamps! obj
+        pbar.increment
+      end
+
+      Stop.insert_many imported_data
     end
   end
 
