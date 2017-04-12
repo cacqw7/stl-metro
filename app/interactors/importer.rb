@@ -18,7 +18,8 @@ class Importer
       :routes,
       :shapes,
       :stop_times,
-      :stops
+      :stops,
+      :trips
     ].each(&importer.method(:send))
   end
 
@@ -99,6 +100,17 @@ class Importer
       end
 
       Stop.insert_many imported_data
+    end
+  end
+
+  def trips
+    progress_bar(:trips) do |pbar|
+      imported_data = clean_csv(:trips) do |obj|
+        timestamps! obj
+        pbar.increment
+      end
+
+      Trip.insert_many imported_data
     end
   end
 
