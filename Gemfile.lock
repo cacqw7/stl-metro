@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/cph/activerecord-insert_many.git
+  revision: 841d9c657d90c128187a405d4abaff8d0b96ad62
+  specs:
+    activerecord-insert_many (0.4.0)
+      activerecord (>= 5.0)
+
+GIT
   remote: https://github.com/rails/sass-rails.git
   revision: dfbcc6a53653d8908007e26324a0f299f026ec4f
   specs:
@@ -43,8 +50,6 @@ GEM
       activemodel (= 5.1.0.rc1)
       activesupport (= 5.1.0.rc1)
       arel (~> 8.0)
-    activerecord-insert_many (0.4.0)
-      activerecord (>= 5.0)
     activesupport (5.1.0.rc1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -137,6 +142,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
+    ruby-progressbar (1.8.1)
     ruby_dep (1.5.0)
     rubyzip (1.2.1)
     sass (3.4.23)
@@ -144,7 +150,6 @@ GEM
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
-    smarter_csv (1.1.4)
     spring (2.0.1)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -183,7 +188,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-insert_many
+  activerecord-insert_many!
   byebug
   capybara (~> 2.13.0)
   coffee-rails (~> 4.2)
@@ -193,10 +198,10 @@ DEPENDENCIES
   pg (~> 0.18)
   puma (~> 3.7)
   rails (~> 5.1.0.rc1)
+  ruby-progressbar
   rubyzip
   sass-rails!
   selenium-webdriver
-  smarter_csv
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
