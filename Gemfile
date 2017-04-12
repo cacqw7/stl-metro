@@ -25,6 +25,7 @@ gem 'ruby-progressbar'
 
 
 group :development, :test do
+  gem 'rspec-rails', '~> 3.5'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara', '~> 2.13.0'
   gem 'selenium-webdriver'
