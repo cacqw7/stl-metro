@@ -150,7 +150,6 @@ GEM
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
-    smarter_csv (1.1.4)
     spring (2.0.1)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -203,7 +202,6 @@ DEPENDENCIES
   rubyzip
   sass-rails!
   selenium-webdriver
-  smarter_csv
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
