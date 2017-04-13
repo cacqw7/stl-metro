@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20170403122432) do
   end
 
   create_table "calendar_dates", force: :cascade do |t|
-    t.integer "service_id"
+    t.string "service_id"
     t.datetime "date"
     t.integer "exception_type"
     t.datetime "created_at", null: false
