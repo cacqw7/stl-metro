@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403122432) do
+ActiveRecord::Schema.define(version: 20170415191846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,9 @@ ActiveRecord::Schema.define(version: 20170403122432) do
     t.integer "exception_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "date_hour"
+    t.integer "date_minute"
+    t.integer "date_second"
   end
 
   create_table "calendars", force: :cascade do |t|
@@ -49,6 +52,12 @@ ActiveRecord::Schema.define(version: 20170403122432) do
     t.datetime "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "start_date_hour"
+    t.integer "start_date_minute"
+    t.integer "start_date_second"
+    t.integer "end_date_hour"
+    t.integer "end_date_minute"
+    t.integer "end_date_second"
   end
 
   create_table "routes", force: :cascade do |t|
