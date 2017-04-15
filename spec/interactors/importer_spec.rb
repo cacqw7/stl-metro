@@ -23,7 +23,7 @@ describe Importer do
     "stops" => 22,
     "trips" => 10 }.each do |method, count|
       describe "when ##{method}" do
-        subject { importer.public_send(method)}
+        subject { importer.public_send(method) }
 
         context "when the source has #{method.humanize.pluralize}" do
           it "should insert them into the database" do
