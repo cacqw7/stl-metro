@@ -1,0 +1,6 @@
+route_long_name,route_type,route_text_color,agency_id,route_id,route_color,route_short_name
+Oakville,3,000000,,13519,FFFFFF,17
+City Limits,3,000000,,13518,FFFFFF,16
+Hazelwood,3,000000,,13636,FFFFFF,38
+Berkeley-Florissant,3,000000,,13637,FFFFFF,39
+Rock Road,3,000000,,13634,FFFFFF,35
