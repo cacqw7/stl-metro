@@ -1,0 +1,12 @@
+<h1><%= @stop.stop_name %></h1>
+
+<% @stop.stop_times.each do |time| %>
+  <ul class="list-group">
+    <li class="list-group-item justify-content-between">
+      <%= "#{time.departure_hour}:#{time.departure_minute}" %>
+      <span class="badge badge-default badge-default">
+        <%= time.trip.route.route_short_name %>
+      </span>
+    </li>
+  </ul>
+<% end %>

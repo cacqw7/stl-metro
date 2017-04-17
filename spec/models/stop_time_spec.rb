@@ -16,4 +16,11 @@ describe StopTime, type: :model do
     it { should validate_presence_of :stop_id }
     it { should validate_presence_of :stop_sequence }
   end
+
+  context "#ordered_stops" do
+    it "should return stops in ascending order by departure time" do
+      stop_time = create(:stop_time)
+      byebug
+    end
+  end
 end

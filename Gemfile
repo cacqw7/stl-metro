@@ -30,6 +30,9 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara', '~> 2.13.0'
   gem 'selenium-webdriver'
+  gem 'awesome_print'
+  gem "factory_girl_rails", "~> 4.0"
+  gem "ffaker", "~> 2.0"
 end
 
 group :development do
