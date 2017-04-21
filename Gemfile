@@ -17,7 +17,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
-
+gem 'bootstrap', '~> 4.0.0.alpha6'
 
 gem 'activerecord-insert_many', github: 'cph/activerecord-insert_many'
 gem 'rubyzip', require: false
