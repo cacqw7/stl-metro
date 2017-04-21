@@ -75,6 +75,7 @@ class Importer
     progress_bar(:shapes) do |pbar|
       imported_data = clean_csv(:shapes) do |obj|
         timestamps! obj
+        gis_point! obj, 'shape_pt_lat', 'shape_pt_lon', to: 'shape_pt_latlon'
         pbar.increment
       end
 
@@ -98,6 +99,7 @@ class Importer
     progress_bar(:stops) do |pbar|
       imported_data = clean_csv(:stops) do |obj|
         timestamps! obj
+        gis_point! obj, 'stop_lat', 'stop_lon', to: 'stop_latlon'
         pbar.increment
       end
 
@@ -117,6 +119,15 @@ class Importer
   end
 
   private
+
+  def gis_point!(obj, lat, lon, to:)
+    string_to_convert = "POINT(#{obj.delete(lat)} #{obj.delete(lon)})"
+    result = Stop.connection.execute <<-SQL
+      SELECT st_wkttosql('#{string_to_convert}');
+    SQL
+
+    obj[to] = result[0]['st_wkttosql']
+  end
 
   def timestamps!(obj)
     obj['created_at'] = now
