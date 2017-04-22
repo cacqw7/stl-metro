@@ -1,3 +1,5 @@
+TYPES_TO_IMPORT = %w(agencies calendar_dates calendars routes shapes stop_times stops trips)
+
 namespace :feeds do
   pastel = Pastel.new
 
@@ -33,12 +35,25 @@ namespace :feeds do
     puts pastel.green('Fetch complete! 🚌')
   end
 
+  namespace :import do
+    TYPES_TO_IMPORT.each do |type|
+      desc "Import most recent download of #{type.pluralize} to the database"
+      task type => :environment do
+        Importer.new(Rails.root.join('tmp', 'gtfs')).send(type)
+      end
+    end
+  end
+
   desc "Import most recent download to the database"
   task import: :environment do
     Importer.import_all(Rails.root.join('tmp', 'gtfs'))
   end
 
-  desc "TODO"
+  desc "Delete rows from imported tables"
   task erase: :environment do
+    TYPES_TO_IMPORT.each do |type|
+      puts "Clearing #{type}"
+      type.classify.constantize.delete_all
+    end
   end
 end

@@ -14,7 +14,7 @@ class Importer
     importer = new(dir)
 
     [
-      :agency,
+      :agencies,
       :calendar,
       :calendar_dates,
       :routes,
@@ -25,7 +25,7 @@ class Importer
     ].each(&importer.method(:send))
   end
 
-  def agency
+  def agencies
     progress_bar(:agency) do |pbar|
       imported_data = clean_csv(:agency) do |obj|
         timestamps! obj

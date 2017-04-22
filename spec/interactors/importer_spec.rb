@@ -14,7 +14,7 @@ describe Importer do
     end
   end
 
-  { "agency" => 1,
+  { "agencies" => 1,
     "calendar_dates" => 6,
     "calendar" => 6,
     "routes" =>5,
