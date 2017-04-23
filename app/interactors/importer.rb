@@ -1,19 +1,13 @@
-require 'csv'
-
 class Importer
-  attr_reader :now
-
   def initialize(dir)
     @dir = dir
     raise ArgumentError if Dir.glob("#{dir}/**").empty?
-
-    @now = Time.zone.now.to_datetime
   end
 
   def self.import_all(dir)
     importer = new(dir)
 
-    [
+    Parallel.each([
       :agencies,
       :calendar,
       :calendar_dates,
@@ -22,100 +16,87 @@ class Importer
       :stop_times,
       :stops,
       :trips
-    ].each(&importer.method(:send))
+    ]) { |import_type| importer.send(import_type) }
   end
 
   def agencies
-    progress_bar(:agency) do |pbar|
-      imported_data = clean_csv(:agency) do |obj|
-        timestamps! obj
-        pbar.increment
-      end
-
-      Agency.insert_many imported_data
-    end
+    clean_csv(:agency) { |imported_data| Agency.insert_many imported_data }
+    puts "Imported Agencies"
   end
 
   def calendar_dates
     progress_bar(:calendar_dates) do |pbar|
-      imported_data = clean_csv(:calendar_dates) do |obj|
-        timestamps! obj
-        format_dates! obj, :date
-        pbar.increment
-      end
+      clean_csv(:calendar_dates) do |imported_data|
+        imported_data.each do |obj|
+          format_dates! obj, 'date'
+          pbar.increment
+        end
 
-      CalendarDate.insert_many imported_data
+        CalendarDate.insert_many imported_data
+      end
     end
   end
 
   def calendar
     progress_bar(:calendar) do |pbar|
-      imported_data = clean_csv(:calendar) do |obj|
-        timestamps! obj
-        format_dates! obj, 'start_date', 'end_date'
-        pbar.increment
-      end
+      clean_csv(:calendar) do |imported_data|
+        imported_data.each do |obj|
+          format_dates! obj, 'start_date', 'end_date'
+          pbar.increment
+        end
 
-      Calendar.insert_many imported_data
+        Calendar.insert_many imported_data
+      end
     end
   end
 
   def routes
-    progress_bar(:routes) do |pbar|
-      imported_data = clean_csv(:routes) do |obj|
-        timestamps! obj
-        pbar.increment
-      end
-
-      Route.insert_many imported_data
-    end
+    clean_csv(:routes) { |imported_data| Route.insert_many imported_data }
+    puts "Imported Routes"
   end
 
   def shapes
     progress_bar(:shapes) do |pbar|
-      imported_data = clean_csv(:shapes) do |obj|
-        timestamps! obj
-        gis_point! obj, 'shape_pt_lat', 'shape_pt_lon', to: 'shape_pt_latlon'
-        pbar.increment
-      end
+      clean_csv(:shapes) do |imported_data|
+        imported_data.each do |obj|
+          gis_point! obj, 'shape_pt_lat', 'shape_pt_lon', to: 'shape_pt_latlon'
+          pbar.increment
+        end
 
-      Shape.insert_many imported_data
+        Shape.insert_many imported_data
+      end
     end
   end
 
   def stop_times
     progress_bar(:stop_times) do |pbar|
-      imported_data = clean_csv(:stop_times) do |obj|
-        timestamps! obj
-        format_times! obj, 'arrival_time', 'departure_time'
-        pbar.increment
-      end
+      clean_csv(:stop_times) do |imported_data|
+        imported_data.each do |h|
+          format_times! h, 'arrival_time', 'departure_time'
+          pbar.increment
+        end
 
-      StopTime.insert_many imported_data
+        StopTime.insert_many imported_data
+      end
     end
   end
 
   def stops
     progress_bar(:stops) do |pbar|
-      imported_data = clean_csv(:stops) do |obj|
-        timestamps! obj
-        gis_point! obj, 'stop_lat', 'stop_lon', to: 'stop_latlon'
-        pbar.increment
-      end
+      clean_csv(:stops) do |imported_data|
+        imported_data.each do |obj|
+          gis_point! obj, 'stop_lat', 'stop_lon', to: 'stop_latlon'
+          pbar.increment
+        end
 
-      Stop.insert_many imported_data
+        Stop.insert_many imported_data
+      end
     end
   end
 
   def trips
-    progress_bar(:trips) do |pbar|
-      imported_data = clean_csv(:trips) do |obj|
-        timestamps! obj
-        pbar.increment
-      end
-
-      Trip.insert_many imported_data
-    end
+    clean_csv(:trips) { |imported_data| Trip.insert_many imported_data }
+    puts "Imported Trips"
   end
 
   private
@@ -127,11 +108,6 @@ class Importer
     SQL
 
     obj[to] = result[0]['st_wkttosql']
-  end
-
-  def timestamps!(obj)
-    obj['created_at'] = now
-    obj['updated_at'] = now
   end
 
   def format_dates!(obj, *properties)
@@ -156,12 +132,8 @@ class Importer
   end
 
   def clean_csv(filename)
-    CSV.foreach(dir(filename), headers: true)
-       .each_with_object([]) do |row, chunk|
-      chunk << row.to_h.tap do |imported_object|
-        yield imported_object
-      end
-    end
+    options = { chunk_size: 1600, strings_as_keys: true, remove_empty_values: false }
+    SmarterCSV.process(dir(filename), options) { |chunk| yield chunk }
   end
 
   def dir(filename)

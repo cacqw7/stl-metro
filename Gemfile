@@ -18,6 +18,8 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
+gem 'smarter_csv'
+gem 'parallel'
 
 
 gem 'activerecord-insert_many', github: 'cph/activerecord-insert_many'
