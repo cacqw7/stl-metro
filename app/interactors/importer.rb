@@ -104,10 +104,10 @@ class Importer
   def gis_point!(obj, lat, lon, to:)
     string_to_convert = "POINT(#{obj.delete(lat)} #{obj.delete(lon)})"
     result = Stop.connection.execute <<-SQL
-      SELECT st_wkttosql('#{string_to_convert}');
+      SELECT ST_GeomFromText('#{string_to_convert}');
     SQL
 
-    obj[to] = result[0]['st_wkttosql']
+    obj[to] = result[0]['st_geomfromtext']
   end
 
   def format_dates!(obj, *properties)
