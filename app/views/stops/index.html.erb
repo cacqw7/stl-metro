@@ -1,0 +1,7 @@
+<ul class="list-group">
+  <% @stops.each do |stop| %>
+    <li class="list-group-item">
+      <%= stop.stop_name.split("@").last %>
+    </li>
+  <% end %>
+</ul>
