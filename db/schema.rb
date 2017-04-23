@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403122432) do
+ActiveRecord::Schema.define(version: 20170423170047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,16 +25,16 @@ ActiveRecord::Schema.define(version: 20170403122432) do
     t.string   "agency_phone"
     t.string   "agency_fare_url"
     t.string   "agency_email"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",      default: -> { "now()" }, null: false
+    t.datetime "updated_at",      default: -> { "now()" }, null: false
   end
 
   create_table "calendar_dates", force: :cascade do |t|
     t.string   "service_id"
     t.datetime "date"
     t.integer  "exception_type"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",     default: -> { "now()" }, null: false
+    t.datetime "updated_at",     default: -> { "now()" }, null: false
   end
 
   create_table "calendars", force: :cascade do |t|
@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(version: 20170403122432) do
     t.integer  "sunday"
     t.datetime "start_date"
     t.datetime "end_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
   end
 
   create_table "routes", force: :cascade do |t|
@@ -62,8 +62,8 @@ ActiveRecord::Schema.define(version: 20170403122432) do
     t.string   "route_url"
     t.string   "route_color"
     t.string   "route_text_color"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",       default: -> { "now()" }, null: false
+    t.datetime "updated_at",       default: -> { "now()" }, null: false
   end
 
   create_table "shapes", force: :cascade do |t|
@@ -71,8 +71,8 @@ ActiveRecord::Schema.define(version: 20170403122432) do
     t.geography "shape_pt_latlon",     limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.integer   "shape_pt_sequence"
     t.decimal   "shape_dist_traveled"
-    t.datetime  "created_at",                                                                   null: false
-    t.datetime  "updated_at",                                                                   null: false
+    t.datetime  "created_at",                                                                   default: -> { "now()" }, null: false
+    t.datetime  "updated_at",                                                                   default: -> { "now()" }, null: false
   end
 
   create_table "stop_times", force: :cascade do |t|
@@ -90,8 +90,8 @@ ActiveRecord::Schema.define(version: 20170403122432) do
     t.integer  "drop_off_type",       default: 0
     t.decimal  "shape_dist_traveled"
     t.decimal  "timepoint"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",          default: -> { "now()" }, null: false
+    t.datetime "updated_at",          default: -> { "now()" }, null: false
     t.index ["stop_id"], name: "index_stop_times_on_stop_id", using: :btree
     t.index ["trip_id"], name: "index_stop_times_on_trip_id", using: :btree
   end
@@ -108,8 +108,8 @@ ActiveRecord::Schema.define(version: 20170403122432) do
     t.string    "parent_station"
     t.string    "timezone"
     t.integer   "wheelchair_boarding"
-    t.datetime  "created_at",                                                                               null: false
-    t.datetime  "updated_at",                                                                               null: false
+    t.datetime  "created_at",                                                                   default: -> { "now()" }, null: false
+    t.datetime  "updated_at",                                                                   default: -> { "now()" }, null: false
   end
 
   create_table "trips", force: :cascade do |t|
@@ -123,8 +123,8 @@ ActiveRecord::Schema.define(version: 20170403122432) do
     t.string   "shape_id"
     t.integer  "wheelchair_accesible", default: 0
     t.integer  "bikes_allowed",        default: 0
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",           default: -> { "now()" }, null: false
+    t.datetime "updated_at",           default: -> { "now()" }, null: false
   end
 
 end
