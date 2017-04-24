@@ -6,7 +6,7 @@
   <div class="list-group">
     <% @routes.each do |route| %>
       <div class="list-group-item">
-        <%= route.name %>
+        <%= link_to route.name, route %>
       </div>
     <% end %>
   </div>
