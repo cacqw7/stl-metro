@@ -4,4 +4,8 @@ class Route < ApplicationRecord
   validates_presence_of :route_short_name,
                         :route_long_name,
                         :route_type
+
+  def name
+    "#{route_short_name} #{route_long_name}"
+  end
 end
