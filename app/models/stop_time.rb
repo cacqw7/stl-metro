@@ -10,4 +10,8 @@ class StopTime < ApplicationRecord
                         :departure_second,
                         :stop_id,
                         :stop_sequence
+
+  def departure_time
+    DateTime.parse("#{departure_hour % 24}:#{departure_minute} CDT")
+  end
 end

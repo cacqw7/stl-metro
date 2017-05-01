@@ -1,9 +1,9 @@
 require "rails_helper"
 
-feature "Lists of Stops", type: :feature do
+feature "List of Stops", type: :feature do
   scenario "visitor finds stop by clicking on it" do
-    shaw = FactoryGirl.create(:stop, stop_name: 'Shaw')
-    FactoryGirl.create(:stop, stop_name: 'Stadium')
+    shaw = create(:stop, stop_name: 'Shaw')
+    create(:stop, stop_name: 'Stadium')
 
     visit root_path
 

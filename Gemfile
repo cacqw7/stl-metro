@@ -37,6 +37,7 @@ group :development, :test do
   gem "factory_girl_rails", "~> 4.0"
   gem "ffaker", "~> 2.0"
   gem 'awesome_print'
+  gem 'timecop', '~> 0.8.0'
 end
 
 group :development do
