@@ -4,6 +4,8 @@ describe StopTime, type: :model do
   describe "Associations" do
     it { should belong_to :trip }
     it { should belong_to :stop }
+    it { should have_many(:calendars).through(:trip) }
+    it { should have_many(:calendar_dates).through(:trip) }
   end
 
   describe "Validations" do
