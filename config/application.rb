@@ -13,5 +13,6 @@ module Metro
     # -- all .rb files in that directory are automatically loaded.
 
     config.active_record.schema_format = :ruby
+    config.time_zone = 'Central Time (US & Canada)'
   end
 end
