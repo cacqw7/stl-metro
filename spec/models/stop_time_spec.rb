@@ -6,6 +6,7 @@ describe StopTime, type: :model do
     it { should belong_to :stop }
     it { should have_many(:calendars).through(:trip) }
     it { should have_many(:calendar_dates).through(:trip) }
+    it { should have_one(:route).through(:trip) }
   end
 
   describe "Validations" do

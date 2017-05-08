@@ -1,7 +1,5 @@
 
-  <h1>
-    <%= @stop.stop_name %>
-  </h1>
+  <h1><%= @stop.stop_name %></h1>
 
   <div class="list-group">
     <% @stop.departures.each do |stop_time, route| %>

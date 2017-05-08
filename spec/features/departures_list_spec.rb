@@ -1,13 +1,12 @@
 require "rails_helper"
 
 feature "List of Departures", type: :feature do
-  before { Timecop.freeze(DateTime.parse "12:43 CDT" ) }
+  before { Timecop.freeze DateTime.parse("12/12/2017 12:43 CDT") }
   after { Timecop.return }
 
   let!(:shaw) { create(:stop, stop_name: 'Shaw') }
   3.times do |i|
-    let!("route#{i}".to_sym) { create(:route) }
-    let!("trip#{i}".to_sym) { create(:trip, route: public_send("route#{i}")) }
+    let!("trip#{i}".to_sym) { create(:trip, :with_route, :with_available_calendar) }
   end
 
   let!(:stop_time0) { create(:stop_time, stop: shaw, departure_hour: 12, departure_minute: 44, trip: trip0)}
@@ -17,8 +16,8 @@ feature "List of Departures", type: :feature do
   scenario "stop page lists departures" do
     visit "/stops/#{shaw.id}"
 
-    expect(page).to have_text "#{route0.route_short_name} 12:44 PM"
-    expect(page).to have_text "#{route1.route_short_name} 2:25 AM"
-    expect(page).not_to have_text "#{route2.route_short_name} 7:12 AM"
+    expect(page).to have_text "#{trip0.route.route_short_name} 12:44 PM"
+    expect(page).to have_text "#{trip1.route.route_short_name} 2:25 AM"
+    expect(page).not_to have_text "#{trip2.route.route_short_name} 7:12 AM"
   end
 end

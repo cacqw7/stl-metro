@@ -10,4 +10,19 @@ class Calendar < ApplicationRecord
                         :friday,
                         :saturday,
                         :sunday
+
+  attr_reader :now
+
+  def available?
+    public_send(day_of_week) == 1 &&
+    start_date <= now && end_date > now
+  end
+
+  def day_of_week
+    now.strftime('%A').downcase
+  end
+
+  def now
+    @now ||= DateTime.now
+  end
 end
