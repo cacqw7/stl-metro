@@ -1,7 +1,7 @@
 <ul class="list-group">
-  <% @stops.each do |stop| %>
+  <% @stops.each do |id, name| %>
     <li class="list-group-item">
-      <%= link_to stop.stop_name.split("@").last, stop %>
+      <%= link_to name.split("@").last.strip, controller: 'stops', action: 'show', id: id %>
     </li>
   <% end %>
 </ul>

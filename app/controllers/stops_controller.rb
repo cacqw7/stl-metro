@@ -1,7 +1,7 @@
 class StopsController < ApplicationController
 
   def index
-    @stops = Stop.all
+    @stops = Stop.pluck(:id, :stop_name)
   end
 
   def show
